@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dovey Lovey Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Comic Sans MS', 'Poppins', cursive;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #fff1ac);
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 480px;
+      min-height: 350px;
+      position: relative;
+    }
+
+    .card h1 {
+      color: #e6005c;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    .yes:hover {
+      background: #ff1e56;
+      transform: scale(1.05);
+    }
+
+    .no {
+      background: #ff4d6d;
+      color: white;
+      position: absolute;
+    }
+
+    /* Letter popup */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .letter {
+      background: #fff;
+      width: 300px;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      animation: unfold 0.6s ease;
+      position: relative;
+    }
+
+    .letter h2 {
+      color: #ff006e;
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .close {
+      margin-top: 20px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: none;
+      background: #ffccd5;
+      cursor: pointer;
+    }
+
+    @keyframes unfold {
+      from {
+        transform: scaleY(0.2);
+        opacity: 0;
+      }
+      to {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Itna Shaant kahe ho, BAAT karlo</h1>
+    <div class="buttons">
+      <button class="btn yes" onclick="openLetter()">Ha Jaisa aap kaho</button>
+    </div>
+    <button class="btn no" id="noBtn">tere baap ki nokar nahi hu</button>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="letter">
+      <h2>GOOD GIRL 💖</h2>
+      <button class="close" onclick="closeLetter()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+
+    function moveButton() {
+      const card = document.querySelector('.card');
+      const yesBtn = document.querySelector('.yes');
+      const question = document.querySelector('.card h1');
+
+      const cardRect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect();
+      const qRect = question.getBoundingClientRect();
+
+      const padding = 20;
+      const maxX = cardRect.width - btnRect.width - padding;
+      const maxY = cardRect.height - btnRect.height - padding;
+
+      let x, y, overlapYes, overlapQuestion;
+
+      do {
+        x = Math.random() * maxX + padding;
+        y = Math.random() * maxY + padding;
+
+        const future = {
+          left: cardRect.left + x,
+          right: cardRect.left + x + btnRect.width,
+          top: cardRect.top + y,
+          bottom: cardRect.top + y + btnRect.height
+        };
+
+        overlapYes = !(
+          future.right < yesRect.left ||
+          future.left > yesRect.right ||
+          future.bottom < yesRect.top ||
+          future.top > yesRect.bottom
+        );
+
+        overlapQuestion = !(
+          future.right < qRect.left ||
+          future.left > qRect.right ||
+          future.bottom < qRect.top ||
+          future.top > qRect.bottom
+        );
+
+      } while (overlapYes || overlapQuestion);
+
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    noBtn.addEventListener('mouseenter', moveButton);
+
+    function openLetter() {
+      document.getElementById('overlay').style.display = 'flex';
+    }
+
+    function closeLetter() {
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    // initial random position for no button
+    moveButton();
+  </script>
+
+</body>
+</html>
