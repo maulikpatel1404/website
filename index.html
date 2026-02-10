@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-13588537371');
+</script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dovey Lovey Page</title>
@@ -189,8 +198,14 @@
     noBtn.addEventListener('mouseenter', moveButton);
 
     function openLetter() {
-      document.getElementById('overlay').style.display = 'flex';
-    }
+  // Google Analytics event
+  gtag('event', 'yes_clicked', {
+    event_category: 'Button',
+    event_label: 'Ha Jaisa aap kaho'
+  });
+
+  document.getElementById('overlay').style.display = 'flex';
+}
 
     function closeLetter() {
       document.getElementById('overlay').style.display = 'none';
@@ -199,6 +214,7 @@
     // initial random position for no button
     moveButton();
   </script>
-
+  
 </body>
 </html>
+
